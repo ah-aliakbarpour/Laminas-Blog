@@ -12,5 +12,20 @@
  * credentials from accidentally being committed into version control.
  */
 
+use Doctrine\DBAL\Driver\PDO\MySQL\Driver;
+
 return [
+    'doctrine' => [
+        'connection' => [
+            'orm_default' => [
+                'driverClass' => Driver::class,
+                'params' => [
+                    'host'     => 'localhost',
+                    'user'     => 'root',
+                    'password' => '1245',
+                    'dbname'   => 'doctrine_tutorial',
+                ]
+            ],
+        ],
+    ],
 ];
