@@ -4,6 +4,7 @@ namespace User\Model\Entity;
 
 use Blog\Model\Entity\PostEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This class represents a single post in a blog.

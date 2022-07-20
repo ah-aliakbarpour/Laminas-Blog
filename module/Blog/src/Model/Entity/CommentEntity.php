@@ -2,7 +2,6 @@
 
 namespace Blog\Model\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -91,7 +90,7 @@ class CommentEntity
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Blog\Entity\Post", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="\Blog\Model\Entity\PostEntity", inversedBy="comments")
      * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
      */
     protected $post;
