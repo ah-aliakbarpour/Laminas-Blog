@@ -25,7 +25,8 @@
         "laminas/laminas-mvc-middleware": "^2.0.0",
         "laminas/laminas-session": "^2.10.0",
         "laminas/laminas-di": "^3.2.2",
-        "doctrine/doctrine-orm-module": "^5.2"
+        "doctrine/doctrine-orm-module": "^5.2",
+        "laminas/laminas-authentication": "^2.11"
     },
     "autoload": {
         "psr-4": {
