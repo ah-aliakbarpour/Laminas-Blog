@@ -30,5 +30,6 @@ return [
     'DoctrineModule',
     'DoctrineORMModule',
     'Application',
-    'Blog'
+    'Blog',
+    'User',
 ];
