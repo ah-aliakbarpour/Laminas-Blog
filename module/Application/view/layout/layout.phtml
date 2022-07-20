@@ -58,6 +58,10 @@
             </div>
         </nav>
         <div class="container">
+
+            <!-- Display flash message -->
+            <?= $this->partial('partial/flash_message.phtml', $this->flashMessenger()); ?>
+
             <?= $this->content ?>
             <hr>
             <footer>

@@ -1,0 +1,86 @@
+<?php
+
+use User\Form\RegisterForm;
+
+
+/**
+ * @var $form RegisterForm
+ */
+
+$this->headTitle('Register');
+
+$form->setAttribute('action', $this->url('register'));
+$form->prepare();
+
+?>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6 shadow-sm mx-auto">
+            <h3 class="mb-3 pt-2 text-md-center">
+                Register
+            </h3>
+
+            <?= $this->form()->openTag($form); ?>
+
+            <!-- add the name input field -->
+            <div class="mb-3">
+                <?= $this->formLabel($form->get('name')); ?>
+                <div class="form-group">
+                    <?= $this->formText($form->get('name')); ?>
+                </div>
+                <div class="text-danger">
+                    <?= $this->formElementErrors($form->get('name')); ?>
+                </div>
+            </div>
+
+            <!-- email address input field -->
+            <div class="mb-3">
+                <?= $this->formLabel($form->get('email')); ?>
+                <div class="form-group">
+                    <?= $this->formEmail($form->get('email')); ?>
+                </div>
+                <div class="text-danger">
+                    <?= $this->formElementErrors($form->get('email')); ?>
+                </div>
+            </div>
+
+            <!-- password field -->
+            <div class="mb-3">
+                <?= $this->formLabel($form->get('password')); ?>
+                <div class="form-group">
+                    <?= $this->formPassword($form->get('password')); ?>
+                </div>
+                <div class="text-danger">
+                    <?= $this->formElementErrors($form->get('password')); ?>
+                </div>
+            </div>
+
+            <!-- confirm password field -->
+            <div class="mb-3">
+                <?= $this->formLabel($form->get('confirm_password')); ?>
+                <div class="form-group">
+                    <?= $this->formPassword($form->get('confirm_password')); ?>
+                </div>
+                <div class="text-danger">
+                    <?= $this->formElementErrors($form->get('confirm_password')); ?>
+                </div>
+            </div>
+
+            <span class="mt-2 float-left">
+				Already have an account? <a href="<?= $this->url('login') ?>">Login here</a>
+			</span>
+
+            <!-- submit -->
+            <div class="mb-3 float-right">
+                <?= $this->formSubmit($form->get('submit')->setAttribute('value', 'Register')); ?>
+            </div>
+
+            <!-- close the form -->
+            <?= $this->form()->closeTag(); ?>
+
+        </div>
+    </div>
+</div>

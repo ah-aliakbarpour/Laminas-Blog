@@ -1,0 +1,72 @@
+<?php
+
+use User\Form\RegisterForm;
+
+/**
+ * @var $form RegisterForm
+ */
+
+
+$this->headTitle('Register');
+
+$form->setAttribute('action', $this->url('login'));
+$form->prepare();
+
+?>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6 shadow-sm mx-auto">
+            <h3 class="mb-3 pt-2 text-md-center">
+                Login
+            </h3>
+
+            <?= $this->form()->openTag($form); ?>
+
+            <!-- email address input field -->
+            <div class="mb-3">
+                <?= $this->formLabel($form->get('email')); ?>
+                <div class="form-group">
+                    <?= $this->formEmail($form->get('email')); ?>
+                </div>
+                <div class="text-danger">
+                    <?= $this->formElementErrors($form->get('email')); ?>
+                </div>
+            </div>
+
+            <!-- password field -->
+            <div class="mb-3">
+                <?= $this->formLabel($form->get('password')); ?>
+                <div class="form-group">
+                    <?= $this->formPassword($form->get('password')); ?>
+                </div>
+                <div class="text-danger">
+                    <?= $this->formElementErrors($form->get('password')); ?>
+                </div>
+            </div>
+
+            <!-- check box -->
+            <div class="mb-3">
+                <div class="custom-control custom-checkbox">
+                    <?= $this->formCheckbox($form->get('remember_me')); ?>
+                    <?= $this->formLabel($form->get('remember_me')); ?>
+                </div>
+            </div>
+
+            <!-- submit -->
+            <div class="mb-3 float-right">
+                <?= $this->formSubmit($form->get('submit')->setAttribute('value', 'Login')); ?>
+            </div>
+
+            <span class="mt-2 float-left">
+				Don't have an account yet? <a href="<?= $this->url('register') ?>">Register here</a>
+			</span>
+
+            <!-- close the form -->
+            <?= $this->form()->closeTag(); ?>
+
+        </div>
+    </div>
+</div>
