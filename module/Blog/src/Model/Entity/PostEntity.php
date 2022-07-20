@@ -5,6 +5,11 @@ namespace Blog\Model\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use User\Model\Entity\UserEntity;
 
+/**
+ * This class represents a single post in a blog.
+ * @ORM\Entity
+ * @ORM\Table(name="post")
+ */
 class PostEntity
 {
     public function __construct()
