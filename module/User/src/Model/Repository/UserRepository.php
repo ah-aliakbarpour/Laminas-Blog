@@ -9,9 +9,6 @@ use User\Model\Entity\UserEntity;
 
 class UserRepository extends EntityRepository
 {
-    /**
-     * @param UserEntity $userEntity
-     */
     private $entityManager;
 
     public function __construct(EntityManagerInterface $em, ClassMetadata $class)
