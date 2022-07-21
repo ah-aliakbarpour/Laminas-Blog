@@ -104,8 +104,7 @@ class AuthService implements AuthServiceInterface
 
     public function logout()
     {
-        if($this->authenticationService->hasIdentity())
-            $this->authenticationService->clearIdentity();
+        $this->authenticationService->clearIdentity();
 
         return [
             'done' => true,
