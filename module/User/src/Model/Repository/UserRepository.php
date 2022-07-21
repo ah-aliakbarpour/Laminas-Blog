@@ -9,8 +9,6 @@ use User\Model\Entity\UserEntity;
 
 class UserRepository extends EntityRepository
 {
-    const TABLE_NAME = 'user';
-
     /**
      * @param UserEntity $userEntity
      * @return void
@@ -26,6 +24,8 @@ class UserRepository extends EntityRepository
 
     public function save(UserEntity $user)
     {
+        $user->setCreatedAt(date('Y-m-d H:i:s'));
+
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }

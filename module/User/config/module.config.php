@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
 use User\Controller\AuthController;
 use User\Controller\Factory\AuthControllerFactory;
+use User\Form\Factory\RegisterFormFactory;
+use User\Form\RegisterForm;
 use User\Model\Service\Factory\UserModelServiceFactory;
 use User\Model\Service\UserModelService;
 use User\Service\Factory\AuthServiceFactory;

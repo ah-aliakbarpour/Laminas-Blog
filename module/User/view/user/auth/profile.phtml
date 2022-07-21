@@ -1,0 +1,18 @@
+<?php
+
+use User\Model\Entity\UserEntity;
+
+
+/**
+ * @var $user UserEntity
+ */
+
+$this->headTitle('Profile');
+
+?>
+
+<center>
+    <h2><b>Name</b>: <?= $user->getName() ?></h2>
+    <br>
+    <h2><b>Email</b>: <?= $user->getEmail() ?></h2>
+</center>

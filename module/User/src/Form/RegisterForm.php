@@ -21,19 +21,12 @@ use User\Model\Repository\UserRepository;
 
 class RegisterForm extends Form
 {
-//    /**
-//     * @var Adapter
-//     */
-//    private $dbAdapter;
-
-    public function __construct(/*Adapter $dbAdapter*/)
+    public function __construct()
     {
         // Define form name
         parent::__construct('register');
         // Set method
         $this->setAttribute('method', 'post');
-
-        //$this->dbAdapter = $dbAdapter;
 
         $this->addElements();
         $this->addInputFilter();
@@ -176,7 +169,7 @@ class RegisterForm extends Form
 //                    'options' => [
 //                        'table' => UserRepository::TABLE_NAME,
 //                        'field' => 'email',
-//                        'adapter' => $this->dbAdapter,
+//                        'adapter' => new Adapter(),
 //                    ],
 //                ],
             ],
