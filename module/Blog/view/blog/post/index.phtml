@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * @var $posts array
+ */
+
+$this->headTitle('Posts list');
+
+?>
+
+<h1>
+    Posts
+    <a class="btn btn-primary float-right" href="<?= $this->url('post/add'); ?>">
+        Add Post
+    </a>
+</h1>
+
+<hr>
+
+<?php foreach($posts as $post): ?>
+    <div class="row">
+        <div class="col-md-10">
+            <a href="<?= $this->url('post/view', ['id'=>$post->getId()]); ?>">
+                <h3 style="
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;">
+                    <?= $this->escapeHtml($post->getTitle()); ?>
+                </h3>
+            </a>
+            <p>
+                Published: <?= $this->escapeHtml(date('jS \of F Y', strtotime($post->getCreatedAt()))); ?>
+            </p>
+            <p style="
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;">
+                <?= $this->escapeHtml($post->getContext()); ?>
+            </p>
+        </div>
+        <div class="col-md-2">
+            <span class="float-right">
+                <a class="btn btn-success" href="<?= $this->url('post/edit', ['id'=>$post->getId()]); ?>">Edit</a>
+                <a class="btn btn-danger" href="<?= $this->url('post/delete', ['id'=>$post->getId()]); ?>">Delete</a>
+            </span>
+        </div>
+    </div>
+    <br>
+<?php endforeach; ?>
+
+<table class="table table-striped">
+    <tr>
+        <th></th>
+        <th>Post Title</th>
+        <th>Date Created</th>
+        <th>Actions</th>
+    </tr>
+    <?php foreach ($posts as $post): ?>
+        <tr>
+            <td>1</td>
+            <td>
+                <a href="<?= $this->url('post/view', ['id'=>$post->getId()]); ?>">
+                    <?= $this->escapeHtml($post->getTitle()); ?>
+                </a>
+                <p style="
+                max-width: 700px;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;">
+                    <?= $this->escapeHtml($post->getContext()); ?>
+                </p>
+            </td>
+            <td><?= $this->escapeHtml($post->getCreatedAt()); ?></td>
+            <td>
+                <a class="btn btn-success" href="<?= $this->url('post/edit', ['id'=>$post->getId()]); ?>">
+                    <span class="glyphicon glyphicon-pencil" ></span> Edit
+                </a>
+                <a class="btn btn-danger" href="<?= $this->url('post/delete', ['id'=>$post->getId()]); ?>">
+                    <span class="glyphicon glyphicon-remove"></span> Delete
+                </a>
+            </td>
+        </tr>
+
+    <?php endforeach; ?>
+
+</table>
