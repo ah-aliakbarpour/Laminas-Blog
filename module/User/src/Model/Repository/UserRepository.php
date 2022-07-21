@@ -11,7 +11,6 @@ class UserRepository extends EntityRepository
 {
     /**
      * @param UserEntity $userEntity
-     * @return void
      */
     private $entityManager;
 
