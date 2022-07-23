@@ -41,10 +41,10 @@ class PostController extends AbstractActionController
         if ($currentPage < 1)
             $currentPage = 1;
 
-        $ITEMS_PER_PAGE = 3;
+        $ITEMS_PER_PAGE = 2;
 
-        $query = $this->postService->search($data['search'] ?? '');
-        $paginate = $this->postService->paginate($query, $currentPage, $ITEMS_PER_PAGE);
+        //$query = $this->postService->search($data['search'] ?? '');
+        $paginate = $this->postService->paginate($data['search'] ?? '', $currentPage, $ITEMS_PER_PAGE);
 
         return new ViewModel([
             'form' => $form,

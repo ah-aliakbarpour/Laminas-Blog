@@ -92,19 +92,20 @@ class PostService implements PostServiceInterface
     }
 
 
-    public function paginate(QueryBuilder $query, int $currentPage, int $itemsPerPage): array
+    public function paginate(string $search, int $currentPage, int $itemsPerPage): array
     {
-        $limit = $itemsPerPage;
-        $start = ($currentPage - 1) * $itemsPerPage + 1;
 
-        $items = $this->postRepository->startLimit($query, $start, $limit);
-
-        $allItems = count($items);
+        $allItems = intval($this->postRepository->countAll($search));
         $allPages = ceil($allItems / $itemsPerPage);
 
+        $limit = $itemsPerPage;
+        $start = ($currentPage - 1) * $itemsPerPage + 1;
         $end = $start + $itemsPerPage - 1;
         if ($end > $allItems)
             $end = $allItems;
+
+        $query = $this->postRepository->search($search);
+        $items = $this->postRepository->startLimit($query, $start, $limit);
 
         $data = [
             'currentPage' => $currentPage,

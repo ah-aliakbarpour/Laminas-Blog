@@ -30,6 +30,10 @@ $form->prepare();
 ?>
 
 <a class="btn btn-outline-primary mb-3" href="<?= $this->url('post'); ?>">Back</a>
+<span class="float-right">
+    <a class="btn btn-success" href="<?= $this->url('post/edit', ['id'=>$post->getId()]); ?>">Edit</a>
+    <a class="btn btn-danger" href="<?= $this->url('post/delete', ['id'=>$post->getId()]); ?>">Delete</a>
+</span>
 
 <h1>
     <?= $this->escapeHtml($post->getTitle()); ?>

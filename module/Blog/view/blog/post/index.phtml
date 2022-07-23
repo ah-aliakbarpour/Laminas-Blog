@@ -43,14 +43,16 @@ $form->prepare();
 </div>
 <?= $this->form()->closeTag(); ?>
 
-    <br>
+<br>
 
-<?php if ($paginateData['allPages'] > 1): ?>
-    <center>
-        <p>
-            Showing <?= $paginateData['start'] ?> to <?= $paginateData['end'] ?> of <?= $paginateData['allItems'] ?> items.
-        </p>
-    </center>
+<?php if ($paginateData['allPages'] > 0 && $paginateData['currentPage'] <= $paginateData['allPages']): ?>
+    <p>
+        Showing <?= $paginateData['start'] ?> to <?= $paginateData['end'] ?> of <?= $paginateData['allItems'] ?> items.
+    </p>
+<?php else: ?>
+    <h3>
+        There isn't any post!
+    </h3>
 <?php endif; ?>
 
 <?php $index = $paginateData['start']; ?>
@@ -92,31 +94,29 @@ $form->prepare();
     </div>
 <?php endforeach; ?>
 
-<?php if ($paginateData['allPages'] > 1): ?>
+<?php if ($paginateData['allPages'] > 1 && $paginateData['currentPage'] <= $paginateData['allPages']): ?>
     <hr>
     <?php
     $searchLink = "&search=$search";
     ?>
-    <center>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item <?php if ($paginateData['currentPage'] == 1) echo 'disabled'; ?>">
-                    <a class="page-link" href="?page=<?php echo $paginateData['currentPage'] - 1 . $searchLink; ?>" tabindex="-1">Previous</a>
-                </li>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item <?php if ($paginateData['currentPage'] == 1) echo 'disabled'; ?>">
+                <a class="page-link" href="?page=<?php echo $paginateData['currentPage'] - 1 . $searchLink; ?>" tabindex="-1">Previous</a>
+            </li>
 
-                <?php
-                for($page = 1; $page <= $paginateData['allPages']; $page++) {
-                    echo '<li class="page-item' . ($page == $paginateData['currentPage'] ? ' disabled' : '') . '">';
-                    echo '<a class="page-link"  href = "?page=' . $page . $searchLink . '">' . $page . ' </a>';
-                    echo '</li>';
-                }
-                ?>
+            <?php
+            for($page = 1; $page <= $paginateData['allPages']; $page++) {
+                echo '<li class="page-item' . ($page == $paginateData['currentPage'] ? ' disabled' : '') . '">';
+                echo '<a class="page-link"  href = "?page=' . $page . $searchLink . '">' . $page . ' </a>';
+                echo '</li>';
+            }
+            ?>
 
-                <li class="page-item <?php if ($paginateData['currentPage'] == $paginateData['allPages']) echo 'disabled'; ?>">
-                    <a class="page-link" href="?page=<?php echo $paginateData['currentPage'] + 1 . $searchLink; ?>">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </center>
+            <li class="page-item <?php if ($paginateData['currentPage'] == $paginateData['allPages']) echo 'disabled'; ?>">
+                <a class="page-link" href="?page=<?php echo $paginateData['currentPage'] + 1 . $searchLink; ?>">Next</a>
+            </li>
+        </ul>
+    </nav>
 
 <?php endif; ?>

@@ -53,10 +53,21 @@ class PostRepository extends EntityRepository
         return $result;
     }
 
-    public function countQuery(QueryBuilder $query)
+    public function countAll(string $search): string
     {
-
-
+        return $this->createQueryBuilder('post')
+            ->select('count(post.id)')
+            ->join('post.user', 'user')
+            ->where('user.name LIKE :author')
+            ->orWhere('post.title LIKE :title')
+            ->orWhere('post.context LIKE :context')
+            ->setParameters([
+                'author' => '%'.$search.'%',
+                'title' => '%'.$search.'%',
+                'context' => '%'.$search.'%',
+            ])
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     public function save(PostEntity $post): void
