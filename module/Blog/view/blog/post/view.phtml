@@ -36,7 +36,13 @@ $form->prepare();
 </h1>
 
 <p>
-    Published: <?= $this->escapeHtml(date('jS \of F Y', strtotime($post->getCreatedAt()))); ?>
+    <small>
+        Created At: <?= $this->escapeHtml(date('d M Y H:i:s', strtotime($post->getCreatedAt()))); ?>
+        <?php if ($post->getUpdatedAt()): ?>
+        |
+        Updated At: <?= $this->escapeHtml(date('d M Y H:i:s', strtotime($post->getUpdatedAt()))); ?>
+        <?php endif; ?>
+    </small>
 </p>
 
 <p>

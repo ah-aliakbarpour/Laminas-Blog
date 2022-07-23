@@ -6,6 +6,8 @@ use Blog\Model\Entity\CommentEntity;
 use Blog\Model\Entity\PostEntity;
 use Blog\Model\Repository\PostRepository;
 use Blog\Model\Service\BlogModelService;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\QueryBuilder;
 use User\Service\AuthService;
 
 class PostService implements PostServiceInterface
@@ -82,5 +84,41 @@ class PostService implements PostServiceInterface
         $currentUserId = $this->authService->getUser()->getId();
 
         return $postUserId == $currentUserId;
+    }
+
+    public function search(string $search): QueryBuilder
+    {
+        return $this->postRepository->search($search);
+    }
+
+
+    public function paginate(QueryBuilder $query, int $currentPage, int $itemsPerPage): array
+    {
+        $limit = $itemsPerPage;
+        $start = ($currentPage - 1) * $itemsPerPage + 1;
+
+        $items = $this->postRepository->startLimit($query, $start, $limit);
+
+        $allItems = count($items);
+        $allPages = ceil($allItems / $itemsPerPage);
+
+        $end = $start + $itemsPerPage - 1;
+        if ($end > $allItems)
+            $end = $allItems;
+
+        $data = [
+            'currentPage' => $currentPage,
+            'start' => $start,
+            'end' => $end,
+            'itemsPerPage' => $itemsPerPage,
+            'allItems' => $allItems,
+            'allPages' => $allPages,
+        ];
+
+        return [
+            'done' => true,
+            'data' => $data,
+            'items' => $items,
+        ];
     }
 }

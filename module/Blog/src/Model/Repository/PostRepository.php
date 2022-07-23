@@ -6,6 +6,9 @@ use Blog\Model\Entity\PostEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\QueryBuilder;
+use http\QueryString;
+use PhpParser\Lexer\TokenEmulator\ReadonlyTokenEmulator;
 
 class PostRepository extends EntityRepository
 {
@@ -20,6 +23,40 @@ class PostRepository extends EntityRepository
         parent::__construct($em, $class);
 
         $this->entityManager = $this->getEntityManager();
+    }
+
+    public function search(string $search): QueryBuilder
+    {
+        $query = $this->createQueryBuilder('post')
+            ->select('post, user')
+            ->join('post.user', 'user')
+            ->where('user.name LIKE :author')
+            ->orWhere('post.title LIKE :title')
+            ->orWhere('post.context LIKE :context')
+            ->setParameters([
+                'author' => '%'.$search.'%',
+                'title' => '%'.$search.'%',
+                'context' => '%'.$search.'%',
+            ]);
+
+        return $query;
+    }
+
+    public function startLimit(QueryBuilder $query, int $start, int $limit): array
+    {
+        $result = $query
+            ->setFirstResult($start - 1)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
+    public function countQuery(QueryBuilder $query)
+    {
+
+
     }
 
     public function save(PostEntity $post): void

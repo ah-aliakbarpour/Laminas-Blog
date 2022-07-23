@@ -88,12 +88,12 @@ class PostEntity
 
     public function getUpdatedAt()
     {
-        return $this->createdAt;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt($createdAt): void
+    public function setUpdatedAt($updatedAt): void
     {
-        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     /**

@@ -4,10 +4,12 @@ namespace Blog\Controller;
 
 use Blog\Form\CommentForm;
 use Blog\Form\PostForm;
+use Blog\Form\PostSearchForm;
 use Blog\Service\PostService;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use User\Service\AuthService;
+use function PHPUnit\Framework\isNan;
 
 class PostController extends AbstractActionController
 {
@@ -29,10 +31,26 @@ class PostController extends AbstractActionController
 
     public function indexAction()
     {
-        $posts = $this->postService->getAll();
+        $data = $this->params()->fromQuery();
+
+        $form = new PostSearchForm();
+        $form->setData($data);
+
+
+        $currentPage = intval($data['page'] ?? 1);
+        if ($currentPage < 1)
+            $currentPage = 1;
+
+        $ITEMS_PER_PAGE = 3;
+
+        $query = $this->postService->search($data['search'] ?? '');
+        $paginate = $this->postService->paginate($query, $currentPage, $ITEMS_PER_PAGE);
 
         return new ViewModel([
-            'posts' => $posts,
+            'form' => $form,
+            'posts' => $paginate['items'],
+            'search' => $data['search'],
+            'paginateData' => $paginate['data'],
         ]);
     }
 
