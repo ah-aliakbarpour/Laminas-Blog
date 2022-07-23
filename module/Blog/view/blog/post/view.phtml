@@ -1,0 +1,95 @@
+<?php
+
+use Blog\Form\CommentForm;
+use Blog\Model\Entity\CommentEntity;
+use Blog\Model\Entity\PostEntity;
+
+/**
+ * @var $post PostEntity
+ * @var $comment CommentEntity
+ * @var $form CommentForm
+ */
+
+
+$this->headTitle('Post Details');
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('post/view/add-comment', ['id' => $post->getId()]));
+$form->get('author')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Author\'s name'
+]);
+$form->get('context')->setAttributes([
+    'class'=>'form-control',
+    'rows'=>6,
+    'placeholder'=>'Text'
+]);
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary']);
+$form->prepare();
+
+?>
+
+<a class="btn btn-outline-primary mb-3" href="<?= $this->url('post'); ?>">Back</a>
+
+<h1>
+    <?= $this->escapeHtml($post->getTitle()); ?>
+</h1>
+
+<p>
+    Published: <?= $this->escapeHtml(date('jS \of F Y', strtotime($post->getCreatedAt()))); ?>
+</p>
+
+<p>
+    <?= $this->escapeHtml($post->getContext()); ?>
+</p>
+
+<h3>
+    <?php
+        $commentCount = count($post->getComments());
+        if ($commentCount == 0)
+            echo 'No comments';
+        else if ($commentCount == 1)
+            echo '1 comment';
+        else
+            echo $commentCount . ' comments';
+    ?>
+</h3>
+
+
+<?php foreach ($post->getComments() as $comment): ?>
+    <hr>
+    <p>
+        <B><?= $this->escapeHtml($comment->getAuthor()) ?></B>
+        <?= $this->escapeHtml($comment->getCreatedAt()); ?>
+    </p>
+    <p>
+        <?= $this->escapeHtml($comment->getContext()); ?>
+    </p>
+<?php endforeach; ?>
+
+<hr>
+
+<a name="comment"></a>
+<h3>Add a comment</h3>
+
+<div class="row">
+    <div class="col-md-8">
+        <?= $this->form()->openTag($form); ?>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('author')); ?>
+            <?= $this->formElement($form->get('author')); ?>
+            <?= $this->formElementErrors($form->get('author')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('context')); ?>
+            <?= $this->formElement($form->get('context')); ?>
+            <?= $this->formElementErrors($form->get('context')); ?>
+        </div>
+
+        <?= $this->formElement($form->get('submit')); ?>
+
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>

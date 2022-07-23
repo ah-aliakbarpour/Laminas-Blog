@@ -1,10 +1,15 @@
 <?php
 
+use Blog\Model\Entity\PostEntity;
+
 /**
  * @var $posts array
+ * @var $post PostEntity
  */
 
 $this->headTitle('Posts list');
+
+
 
 ?>
 
@@ -31,7 +36,7 @@ $this->headTitle('Posts list');
                 </h3>
             </a>
             <p>
-                Published: <?= $this->escapeHtml(date('jS \of F Y', strtotime($post->getCreatedAt()))); ?>
+                <b style="font-size: 20px"><?= $post->getUser()->getName() ?></b> &nbsp <?= $this->escapeHtml(date('d M Y', strtotime($post->getCreatedAt()))); ?>
             </p>
             <p style="
                 display: -webkit-box;

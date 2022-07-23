@@ -2,10 +2,14 @@
 
 namespace Blog;
 
+use Blog\Controller\CommentController;
+use Blog\Controller\Factory\CommentControllerFactory;
 use Blog\Controller\Factory\PostControllerFactory;
 use Blog\Controller\PostController;
 use Blog\Model\Service\BlogModelService;
 use Blog\Model\Service\Factory\BlogModelServiceFactory;
+use Blog\Service\CommentService;
+use Blog\Service\Factory\CommentServiceFactory;
 use Blog\Service\Factory\PostServiceFactory;
 use Blog\Service\PostService;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -35,6 +39,19 @@ return [
                             ],
                             'constraints' => [
                                 'id' => '[1-9]\d*',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'add-comment' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/add-comment',
+                                    'defaults' => [
+                                        'controller' => CommentController::class,
+                                        'action' => 'add',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -78,12 +95,15 @@ return [
     'controllers' => [
         'factories' => [
             PostController::class => PostControllerFactory::class,
+            CommentController::class => CommentControllerFactory::class,
         ],
     ],
     'service_manager' => [
         'factories' => [
             BlogModelService::class => BlogModelServiceFactory::class,
+
             PostService::class => PostServiceFactory::class,
+            CommentService::class => CommentServiceFactory::class,
         ],
     ],
     'doctrine' => [

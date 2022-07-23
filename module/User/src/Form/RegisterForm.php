@@ -45,7 +45,7 @@ class RegisterForm extends Form
                 'required' => true,
                 'size' => 40,
                 'maxlength' => 25,
-                'pattern' => '^[a-zA-Z0-9]+$',
+                'pattern' => '^[a-zA-Z0-9 ]+$',
                 'data-toggle' => 'tooltip',
                 'class' => 'form-control',
                 'placeholder' => 'Enter Your Name',
@@ -164,14 +164,6 @@ class RegisterForm extends Form
                         ],
                     ],
                 ],
-//                [
-//                    'name' => NoRecordExists::class,
-//                    'options' => [
-//                        'table' => UserRepository::TABLE_NAME,
-//                        'field' => 'email',
-//                        'adapter' => new Adapter(),
-//                    ],
-//                ],
             ],
         ]);
 

@@ -105,7 +105,7 @@ class PostEntity
     /**
      * Returns comments for this post.
      */
-    public function getComments(): ArrayCollection
+    public function getComments()
     {
         return $this->comments;
     }

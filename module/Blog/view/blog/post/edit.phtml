@@ -1,0 +1,52 @@
+<?php
+
+use Blog\Model\Entity\PostEntity;
+
+/**
+ * @var $post PostEntity
+ */
+
+
+$this->headTitle('Edit Post');
+
+$form = $this->form;
+$form->get('title')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Enter post title here'
+]);
+$form->get('context')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Type content here',
+    'rows'=>6
+]);
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary']);
+$form->get('submit')->setValue('Save');
+$form->prepare();
+
+?>
+
+<a class="btn btn-outline-primary mb-3" href="<?= $this->url('post'); ?>">Back</a>
+
+<h1>Edit Post</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <?= $this->form()->openTag($form); ?>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('title')); ?>
+            <?= $this->formElement($form->get('title')); ?>
+            <?= $this->formElementErrors($form->get('title')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('context')); ?>
+            <?= $this->formElement($form->get('context')); ?>
+            <?= $this->formElementErrors($form->get('context')); ?>
+        </div>
+
+        <?= $this->formElement($form->get('submit')); ?>
+
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>
