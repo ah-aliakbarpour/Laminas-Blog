@@ -13,4 +13,19 @@ interface AuthServiceInterface
         AuthenticationService $authenticationService,
         Adapter $dbAdapter
     );
+
+    // Check if user logged in or not
+    public function hasIdentity(): bool;
+
+    // Register
+    public function register($data): array;
+
+    // Login
+    public function login($data): array;
+
+    // Logout
+    public function logout();
+
+    // Get current user
+    public function getUser();
 }

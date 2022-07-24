@@ -39,7 +39,11 @@ $form->prepare();
     <?= $this->escapeHtml($post->getTitle()); ?>
 </h1>
 
-<p>
+<h4 style="display: inline">
+        <?= $this->escapeHtml($post->getUser()->getName()); ?>
+</h4>
+&nbsp;
+<p style="display: inline">
     <small>
         Created At: <?= $this->escapeHtml(date('d M Y H:i:s', strtotime($post->getCreatedAt()))); ?>
         <?php if ($post->getUpdatedAt()): ?>
@@ -48,12 +52,13 @@ $form->prepare();
         <?php endif; ?>
     </small>
 </p>
-
+<br>
+<br>
 <p>
     <?= $this->escapeHtml($post->getContext()); ?>
 </p>
 
-<h3>
+<h4>
     <?php
         $commentCount = count($post->getComments());
         if ($commentCount == 0)
@@ -63,13 +68,14 @@ $form->prepare();
         else
             echo $commentCount . ' comments';
     ?>
-</h3>
+</h4>
 
 
 <?php foreach ($post->getComments() as $comment): ?>
     <hr>
     <p>
         <B><?= $this->escapeHtml($comment->getAuthor()) ?></B>
+        &nbsp;
         <?= $this->escapeHtml($comment->getCreatedAt()); ?>
     </p>
     <p>

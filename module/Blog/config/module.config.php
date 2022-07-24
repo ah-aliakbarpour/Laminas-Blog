@@ -2,10 +2,18 @@
 
 namespace Blog;
 
+use Blog\Controller\AddController;
 use Blog\Controller\CommentController;
+use Blog\Controller\DeleteController;
+use Blog\Controller\EditController;
+use Blog\Controller\Factory\AddControllerFactory;
 use Blog\Controller\Factory\CommentControllerFactory;
-use Blog\Controller\Factory\PostControllerFactory;
-use Blog\Controller\PostController;
+use Blog\Controller\Factory\DeleteControllerFactory;
+use Blog\Controller\Factory\EditControllerFactory;
+use Blog\Controller\Factory\IndexControllerFactory;
+use Blog\Controller\Factory\ViewControllerFactory;
+use Blog\Controller\IndexController;
+use Blog\Controller\ViewController;
 use Blog\Model\Service\BlogModelService;
 use Blog\Model\Service\Factory\BlogModelServiceFactory;
 use Blog\Service\CommentService;
@@ -24,7 +32,7 @@ return [
                 'options' => [
                     'route' => '/post',
                     'defaults' => [
-                        'controller' => PostController::class,
+                        'controller' => IndexController::class,
                         'action' => 'index',
                     ]
                 ],
@@ -35,6 +43,7 @@ return [
                         'options' => [
                             'route'    => '/:id',
                             'defaults' => [
+                                'controller' => ViewController::class,
                                 'action' => 'view',
                             ],
                             'constraints' => [
@@ -60,6 +69,7 @@ return [
                         'options' => [
                             'route'    => '/add',
                             'defaults' => [
+                                'controller' => AddController::class,
                                 'action'     => 'add',
                             ],
                         ],
@@ -69,6 +79,7 @@ return [
                         'options' => [
                             'route'    => '/edit/:id',
                             'defaults' => [
+                                'controller' => EditController::class,
                                 'action'     => 'edit',
                             ],
                             'constraints' => [
@@ -81,6 +92,7 @@ return [
                         'options' => [
                             'route' => '/delete/:id',
                             'defaults' => [
+                                'controller' => DeleteController::class,
                                 'action'     => 'delete',
                             ],
                             'constraints' => [
@@ -94,7 +106,12 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            PostController::class => PostControllerFactory::class,
+            IndexController::class => IndexControllerFactory::class,
+            ViewController::class => ViewControllerFactory::class,
+            AddController::class => AddControllerFactory::class,
+            EditController::class => EditControllerFactory::class,
+            DeleteController::class => DeleteControllerFactory::class,
+
             CommentController::class => CommentControllerFactory::class,
         ],
     ],

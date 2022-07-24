@@ -59,6 +59,6 @@ class CommentController extends AbstractActionController
         return (new ViewModel([
             'form' => $form,
             'post' => $post,
-        ]))->setTemplate('blog/post/view');
+        ]))->setTemplate('blog/view/view');
     }
 }

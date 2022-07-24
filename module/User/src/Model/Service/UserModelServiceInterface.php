@@ -10,5 +10,6 @@ interface UserModelServiceInterface
 {
     public function __construct(EntityManager $entityManager);
 
+    // Get user repository
     public function userRepository(): UserRepository;
 }

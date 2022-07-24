@@ -9,7 +9,6 @@ use Blog\Service\PostService;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use User\Service\AuthService;
-use function PHPUnit\Framework\isNan;
 
 class PostController extends AbstractActionController
 {
@@ -36,15 +35,17 @@ class PostController extends AbstractActionController
         $form = new PostSearchForm();
         $form->setData($data);
 
-
         $currentPage = intval($data['page'] ?? 1);
         if ($currentPage < 1)
             $currentPage = 1;
 
-        $ITEMS_PER_PAGE = 2;
+        $ITEMS_PER_PAGE = 5;
 
-        //$query = $this->postService->search($data['search'] ?? '');
-        $paginate = $this->postService->paginate($data['search'] ?? '', $currentPage, $ITEMS_PER_PAGE);
+        $paginate = $this->postService->paginate(
+            $data['search'] ?? '',
+            $currentPage,
+            $ITEMS_PER_PAGE
+        );
 
         return new ViewModel([
             'form' => $form,
