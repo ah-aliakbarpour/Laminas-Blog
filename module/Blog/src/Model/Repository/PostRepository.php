@@ -40,6 +40,31 @@ class PostRepository extends EntityRepository
         return $query;
     }
 
+    public function getList(string $params, $total = false): array
+    {
+        if ($total){
+//            ->select('post, user')
+        }
+        // badane asli q
+        // filter
+
+        if ($total){
+            //result fetch
+        }else{
+
+            //order
+//            $result = $query
+//                ->setFirstResult($start - 1)
+//                ->setMaxResults($limit)
+//                ->getQuery()
+//                ->getResult();
+            //result fetchall
+        }
+
+        return $result;
+
+    }
+
     public function startLimit(QueryBuilder $query, int $start, int $limit): array
     {
         $result = $query

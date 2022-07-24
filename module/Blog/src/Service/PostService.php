@@ -105,7 +105,31 @@ class PostService implements PostServiceInterface
         return [
             'done' => true,
             'data' => $data,
-            'items' => $items,
+            'items' => $this->_prepare($items),
         ];
     }
+
+    public function getList($params = []){
+        //set params
+        //validation
+
+        //query
+
+        return [
+            'done' => true,
+            'data' => $data,
+            'items' => $this->_prepare($items),
+            'content' => ''
+        ];
+
+    }
+    private function _prepare( $data ):array{
+        $res = [];
+        foreach ( $data as $d ){
+            $res = $d;
+        }
+        return $res;
+    }
+
+
 }
