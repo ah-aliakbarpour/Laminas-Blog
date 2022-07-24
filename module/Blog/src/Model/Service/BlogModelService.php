@@ -29,4 +29,16 @@ class BlogModelService implements BlogModelServiceInterface
     {
         return $this->entityManager->getRepository(CommentEntity::class);
     }
+
+    public function getDoctrineConnection(): array
+    {
+        return [
+            'driver' => 'pdo_mysql',
+            'dbname' => 'blog',
+            'host' => 'localhost',
+            'port' => '3306',
+            'user' => 'root',
+            'password' => '1245',
+        ];
+    }
 }

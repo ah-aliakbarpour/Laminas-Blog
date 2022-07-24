@@ -15,4 +15,7 @@ interface BlogModelServiceInterface
 
     // Get comment repository
     public function commentRepository(): CommentRepository;
+
+    // Get doctrine connection
+    public function getDoctrineConnection(): array;
 }

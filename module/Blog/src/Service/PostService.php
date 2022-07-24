@@ -85,20 +85,39 @@ class PostService implements PostServiceInterface
 
     public function paginate(string $search, int $currentPage, int $itemsPerPage): array
     {
-        $allItems = intval($this->postRepository->countAll($search));
-        $allPages = ceil($allItems / $itemsPerPage);
+        $total = intval($this->postRepository->get(
+            'count(post.id) as total',
+            [
+                ['where', 'user.name LIKE :value', '%'.$search.'%'],
+                ['orWhere', 'post.title LIKE :value', '%'.$search.'%'],
+                ['orWhere', 'post.context LIKE :value', '%'.$search.'%'],
+            ],
+            true
+        )['total']);
+        $allPages = ceil($total / $itemsPerPage);
         $start = ($currentPage - 1) * $itemsPerPage + 1;
         $end = $start + $itemsPerPage - 1;
-        if ($end > $allItems)
-            $end = $allItems;
-        $query = $this->postRepository->search($search);
-        $items = $this->postRepository->startLimit($query, $start, $itemsPerPage);
+        if ($end > $total)
+            $end = $total;
+
+        $items = $this->postRepository->get(
+            'partial post.{id, title, createdAt}, partial user.{id, name}',
+            [
+                ['where', 'user.name LIKE :value', '%'.$search.'%'],
+                ['orWhere', 'post.title LIKE :value', '%'.$search.'%'],
+                ['orWhere', 'post.context LIKE :value', '%'.$search.'%'],
+                ['orderBy', 'post.id'],
+                ['setFirstResult', $start - 1],
+                ['setMaxResults', $itemsPerPage],
+            ]
+        );
+
         $data = [
             'currentPage' => $currentPage,
             'start' => $start,
             'end' => $end,
             'itemsPerPage' => $itemsPerPage,
-            'allItems' => $allItems,
+            'total' => $total,
             'allPages' => $allPages,
         ];
 
@@ -107,5 +126,10 @@ class PostService implements PostServiceInterface
             'data' => $data,
             'items' => $items,
         ];
+    }
+
+    private function _prepare($items)
+    {
+
     }
 }

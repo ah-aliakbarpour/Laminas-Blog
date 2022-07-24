@@ -47,7 +47,7 @@ $form->prepare();
 
 <?php if ($paginateData['allPages'] > 0 && $paginateData['currentPage'] <= $paginateData['allPages']): ?>
     <p>
-        Showing <?= $paginateData['start'] ?> to <?= $paginateData['end'] ?> of <?= $paginateData['allItems'] ?> items.
+        Showing <?= $paginateData['start'] ?> to <?= $paginateData['end'] ?> of <?= $paginateData['total'] ?> items.
     </p>
 <?php else: ?>
     <h3>
