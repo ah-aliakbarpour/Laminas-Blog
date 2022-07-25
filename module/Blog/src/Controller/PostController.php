@@ -5,6 +5,7 @@ namespace Blog\Controller;
 use Blog\Form\CommentForm;
 use Blog\Form\PostForm;
 use Blog\Form\PostSearchForm;
+use Blog\Model\Entity\PostEntity;
 use Blog\Service\PostService;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
@@ -17,15 +18,9 @@ class PostController extends AbstractActionController
      */
     private $postService;
 
-    /**
-     * @var AuthService
-     */
-    private $authService;
-
-    public function __construct(PostService $postService, AuthService $authService)
+    public function __construct(PostService $postService)
     {
         $this->postService = $postService;
-        $this->authService = $authService;
     }
 
     public function indexAction()
@@ -35,15 +30,11 @@ class PostController extends AbstractActionController
         $form = new PostSearchForm();
         $form->setData($data);
 
-        $currentPage = intval($data['page'] ?? 1);
-        if ($currentPage < 1)
-            $currentPage = 1;
-
         $ITEMS_PER_PAGE = 5;
 
         $paginate = $this->postService->paginate(
             $data['search'] ?? '',
-            $currentPage,
+            $data['page'],
             $ITEMS_PER_PAGE
         );
 
@@ -59,43 +50,43 @@ class PostController extends AbstractActionController
     {
         $postId = $this->params()->fromRoute('id', -1);
 
-        $post = $this->postService->find($postId);
-        if ($post == null) {
-            $this->getResponse()->setStatusCode(404);
-            return false;
+        $access = $this->postService->access(false, $postId, true);
+        if (!$access['done']) {
+            $this->flashMessenger()->addErrorMessage($access['data']['errorMessage']);
+            return $this->redirect()->toRoute($access['data']['redirectToRoute']);
         }
 
         $form = new CommentForm();
 
         return new ViewModel([
             'form' => $form,
-            'post' => $post,
+            'post' => $access['items'],
         ]);
     }
 
     public function addAction()
     {
-        if (!$this->authService->hasIdentity()) {
-            $this->flashMessenger()->addErrorMessage('To do this action you should login!');
-            return $this->redirect()->toRoute('login');
+        $access = $this->postService->access(true);
+        if (!$access['done']) {
+            $this->flashMessenger()->addErrorMessage($access['data']['errorMessage']);
+            return $this->redirect()->toRoute($access['data']['redirectToRoute']);
         }
 
         $form = new PostForm();
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
-            $form->setData($data);
-            if ($form->isValid()) {
-                $data = $form->getData();
+            $save = $this->postService->save($data);
 
-                $add = $this->postService->add($data);
-
-                if ($add['done'])
-                    $this->flashMessenger()->addSuccessMessage('New Post added successfully!');
-                else
-                    $this->flashMessenger()->addErrorMessage($add['content']);
-
+            if ($save['done']) {
+                $this->flashMessenger()->addSuccessMessage('New Post added successfully!');
                 return $this->redirect()->toRoute('post');
+            }
+            else {
+                foreach ($save['data']['errors'] as $error)
+                    $this->flashMessenger()->addErrorMessage($error);
+
+                $form->setData($save['data']['formData']);
             }
         }
 
@@ -106,42 +97,33 @@ class PostController extends AbstractActionController
 
     public function editAction()
     {
-        if (!$this->authService->hasIdentity()) {
-            $this->flashMessenger()->addErrorMessage('To do this action you should login!');
-            return $this->redirect()->toRoute('login');
-        }
-
         $postId = $this->params()->fromRoute('id', -1);
 
-        // Find existing post in the database.
-        $post = $this->postService->find($postId);
-        if ($post == null) {
-            $this->getResponse()->setStatusCode(404);
-            return false;
+        $access = $this->postService->access(true, $postId, true, true);
+        if (!$access['done']) {
+            $this->flashMessenger()->addErrorMessage($access['data']['errorMessage']);
+            return $this->redirect()->toRoute($access['data']['redirectToRoute']);
         }
 
-        if (!$this->postService->userHasAccess($post)) {
-            $this->flashMessenger()->addErrorMessage('You you don\'t have access to this action!');
-            return $this->redirect()->toRoute('post');
-        }
-
+        /**
+         * @var $post PostEntity
+         */
+        $post = $access['items'];
         $form = new PostForm();
 
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
-            $form->setData($data);
-            if ($form->isValid()) {
+            $save = $this->postService->save(['id' => $postId] + $data);
 
-                $data = $form->getData();
-
-                $edit = $this->postService->edit($post, $data);
-
-                if ($edit['done'])
-                    $this->flashMessenger()->addSuccessMessage('Post edited successfully!');
-                else
-                    $this->flashMessenger()->addErrorMessage($edit['content']);
-
+            if ($save['done']) {
+                $this->flashMessenger()->addSuccessMessage('Post edited successfully!');
                 return $this->redirect()->toRoute('post');
+            }
+            else {
+                foreach ($save['data']['errors'] as $error)
+                    $this->flashMessenger()->addErrorMessage($error);
+
+                $form->setData($save['data']['formData']);
             }
         }
         else {
@@ -161,26 +143,15 @@ class PostController extends AbstractActionController
 
     public function deleteAction()
     {
-        if (!$this->authService->hasIdentity()) {
-            $this->flashMessenger()->addErrorMessage('To do this action you should login!');
-            return $this->redirect()->toRoute('login');
-        }
-
         $postId = $this->params()->fromRoute('id', -1);
 
-        // Find existing post in the database.
-        $post = $this->postService->find($postId);
-        if ($post == null) {
-            $this->getResponse()->setStatusCode(404);
-            return false;
+        $access = $this->postService->access(true, $postId, true, true);
+        if (!$access['done']) {
+            $this->flashMessenger()->addErrorMessage($access['data']['errorMessage']);
+            return $this->redirect()->toRoute($access['data']['redirectToRoute']);
         }
 
-        if (!$this->postService->userHasAccess($post)) {
-            $this->flashMessenger()->addErrorMessage('You you don\'t have access to this action!');
-            return $this->redirect()->toRoute('post');
-        }
-
-        $delete = $this->postService->delete($post);
+        $delete = $this->postService->delete($postId);
 
         if ($delete['done'])
             $this->flashMessenger()->addSuccessMessage('Post deleted successfully!');

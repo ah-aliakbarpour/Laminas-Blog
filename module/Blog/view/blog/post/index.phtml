@@ -74,7 +74,7 @@ $form->prepare();
                 </h3>
             </a>
             <p>
-                <b style="font-size: 20px"><?= $post->getUser()->getName() ?></b> &nbsp <?= $this->escapeHtml(date('d M Y', strtotime($post->getCreatedAt()))); ?>
+                <b style="font-size: 20px"><?= $post->getUser()->getName() ?></b> &nbsp <?= $this->escapeHtml(date('d M Y H:i:s', strtotime($post->getCreatedAt()))); ?>
             </p>
             <p style="
                 display: -webkit-box;

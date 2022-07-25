@@ -5,10 +5,13 @@ namespace Blog\Service;
 use Blog\Model\Entity\PostEntity;
 use Blog\Model\Service\BlogModelService;
 
+/**
+ * For: Blog\Service\PostService
+ */
 interface CommentServiceInterface
 {
-    public function __construct(BlogModelService $blogModelService);
+    public function __construct(BlogModelService $blogModelService, PostService $postService);
 
-    // Add new comment
-    public function add(PostEntity $post, array $data): array;
+    // Add comment
+    public function save(array $data): array;
 }

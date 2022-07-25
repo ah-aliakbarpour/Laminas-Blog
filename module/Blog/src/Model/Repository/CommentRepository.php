@@ -13,28 +13,12 @@ class CommentRepository extends EntityRepository
      * Doctrine entity manager.
      * @var EntityManagerInterface
      */
-    private $entityManager;
+    public $entityManager;
 
     public function __construct(EntityManagerInterface $em, ClassMetadata $class)
     {
         parent::__construct($em, $class);
 
         $this->entityManager = $this->getEntityManager();
-    }
-
-    public function save(CommentEntity $comment): void
-    {
-        // Add
-        if (!$comment->getId()) {
-            $comment->setCreatedAt(date('Y-m-d H:i:s'));
-
-            $this->entityManager->persist($comment);
-        }
-        // Edit
-        else {
-            $comment->setUpdatedAt(date('Y-m-d H:i:s'));
-        }
-
-        $this->entityManager->flush();
     }
 }

@@ -7,28 +7,25 @@ use Blog\Model\Service\BlogModelService;
 use Doctrine\ORM\QueryBuilder;
 use User\Service\AuthService;
 
+/**
+ * For: Blog\Service\PostService
+ */
 interface PostServiceInterface
 {
     public function __construct(BlogModelService $blogModelService, AuthService $authService);
 
-    // Get all posts
-    public function getAll(): array;
-
     // Find a single post by id
-    public function find($postId);
+    public function find(string $postId): array;
 
-    // Add new post
-    public function add(array $data): array;
-
-    // Edit post
-    public function edit(PostEntity $post, array $data): array;
+    // Add/Edit new post
+    public function save(array $data): array;
 
     // Delete post
-    public function delete(PostEntity $post): array;
+    public function delete(string $postId): array;
 
-    // Check if the post belongs to the current user
-    public function userHasAccess(PostEntity $post): bool;
+    // Check user access
+    public function access(bool $identity, $postId = -1, bool $exists = false, bool $access = false): array;
 
     // Paginate data
-    public function paginate(string $search, int $currentPage, int $itemsPerPage): array;
+    public function paginate(string $search, $currentPage, int $itemsPerPage): array;
 }

@@ -3,8 +3,10 @@
 namespace Blog\Controller;
 
 use Blog\Form\CommentForm;
+use Blog\Model\Entity\PostEntity;
 use Blog\Service\CommentService;
 use Blog\Service\PostService;
+use Doctrine\ORM\EntityManagerInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
@@ -20,6 +22,12 @@ class CommentController extends AbstractActionController
      */
     private $postService;
 
+    /**
+     * Doctrine entity manager.
+     * @var EntityManagerInterface
+     */
+    public $entityManager;
+
     public function __construct(CommentService $commentService, PostService $postService)
     {
         $this->commentService = $commentService;
@@ -30,13 +38,16 @@ class CommentController extends AbstractActionController
     {
         $postId = $this->params()->fromRoute('id', -1);
 
-        $post = $this->postService->find($postId);
-        // If there is no post or request method was not post
-        if ($post == null || !$this->getRequest()->isPost()) {
-            $this->getResponse()->setStatusCode(404);
-            return false;
+        $access = $this->postService->access(false, $postId, true);
+        if (!$access['done']) {
+            $this->flashMessenger()->addErrorMessage($access['data']['errorMessage']);
+            return $this->redirect()->toRoute($access['data']['redirectToRoute']);
         }
 
+        /**
+         * @var $post PostEntity
+         */
+        $post = $access['items'];
         $form = new CommentForm();
 
         if($this->getRequest()->isPost()) {
@@ -45,12 +56,12 @@ class CommentController extends AbstractActionController
             if($form->isValid()) {
                 $data = $form->getData();
 
-                $add = $this->commentService->add($post, $data);
+                $save = $this->commentService->save(['postId' => $postId] + $data);
 
-                if ($add['done'])
+                if ($save['done'])
                     $this->flashMessenger()->addSuccessMessage('New comment added successfully!');
                 else
-                    $this->flashMessenger()->addErrorMessage($add['content']);
+                    $this->flashMessenger()->addErrorMessage($save['content']);
 
                 return $this->redirect()->toRoute('post/view', ['id' => $postId]);
             }
@@ -59,6 +70,6 @@ class CommentController extends AbstractActionController
         return (new ViewModel([
             'form' => $form,
             'post' => $post,
-        ]))->setTemplate('blog/view/view');
+        ]))->setTemplate('blog/post/view');
     }
 }

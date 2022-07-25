@@ -21,7 +21,7 @@ class PostForm extends Form
         $this->setAttribute('method', 'post');
 
         $this->addElements();
-        $this->addInputFilter();
+        //$this->addInputFilter();
     }
 
     protected function addElements()

@@ -13,8 +13,7 @@ class PostControllerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): PostController
     {
         $postService = $container->get(PostService::class);
-        $authService = $container->get(AuthService::class);
 
-        return new PostController($postService, $authService);
+        return new PostController($postService);
     }
 }

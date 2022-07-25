@@ -6,7 +6,11 @@ use Blog\Model\Entity\CommentEntity;
 use Blog\Model\Entity\PostEntity;
 use Blog\Model\Repository\CommentRepository;
 use Blog\Model\Service\BlogModelService;
+use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Interface: Blog\Service\CommentServiceInterface
+ */
 class CommentService implements CommentServiceInterface
 {
     /**
@@ -14,19 +18,46 @@ class CommentService implements CommentServiceInterface
      */
     public $commentRepository;
 
-    public function __construct(BlogModelService $blogModelService)
+    /**
+     * @var PostService
+     */
+    private $postService;
+
+    /**
+     * Doctrine entity manager.
+     * @var EntityManagerInterface
+     */
+    public $entityManager;
+
+    public function __construct(BlogModelService $blogModelService, PostService $postService)
     {
         $this->commentRepository = $blogModelService->commentRepository();
+        $this->entityManager = $this->commentRepository->entityManager;
+        $this->postService = $postService;
     }
 
-    public function add(PostEntity $post, array $data): array
+    public function save(array $data): array
     {
+        $find = $this->postService->find($data['postId']);
+        if (!$find['done'])
+            return [
+                'done' => false,
+                'content' => 'Post not found!',
+            ];
+
+        /**
+         * @var $post PostEntity
+         */
+        $post = $find['items'];
+
         $comment = new CommentEntity();
         $comment->setPost($post);
         $comment->setAuthor($data['author']);
         $comment->setContext($data['context']);
+        $comment->setCreatedAt(date('Y-m-d H:i:s'));
 
-        $this->commentRepository->save($comment);
+        $this->entityManager->persist($comment);
+        $this->entityManager->flush();
 
         return [
             'done' => true,
