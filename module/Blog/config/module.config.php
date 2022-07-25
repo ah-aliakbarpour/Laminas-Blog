@@ -10,6 +10,7 @@ use Blog\Model\Repository\Factory\PostRepositoryFactory;
 use Blog\Model\Repository\PostRepository;
 use Blog\Model\Service\BlogModelService;
 use Blog\Model\Service\Factory\BlogModelServiceFactory;
+use Blog\Plugin\LolaPlugin;
 use Blog\Service\CommentService;
 use Blog\Service\Factory\CommentServiceFactory;
 use Blog\Service\Factory\PostServiceFactory;
@@ -17,6 +18,7 @@ use Blog\Service\PostService;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
     'router' => [
@@ -106,6 +108,14 @@ return [
 
             PostService::class => PostServiceFactory::class,
             CommentService::class => CommentServiceFactory::class,
+        ],
+    ],
+    'controller_plugins' => [
+        'aliases' => [
+            'lolaPlugin' => LolaPlugin::class
+        ],
+        'factories' => [
+            LolaPlugin::class => InvokableFactory::class,
         ],
     ],
     'doctrine' => [

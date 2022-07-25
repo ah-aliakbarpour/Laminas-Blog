@@ -25,6 +25,8 @@ class PostController extends AbstractActionController
 
     public function indexAction()
     {
+        $this->lolaPlugin();
+
         $data = $this->params()->fromQuery();
 
         $form = new PostSearchForm();
