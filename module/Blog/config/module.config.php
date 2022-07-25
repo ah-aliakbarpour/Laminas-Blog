@@ -6,8 +6,6 @@ use Blog\Controller\CommentController;
 use Blog\Controller\Factory\CommentControllerFactory;
 use Blog\Controller\Factory\PostControllerFactory;
 use Blog\Controller\PostController;
-use Blog\Model\Repository\Factory\PostRepositoryFactory;
-use Blog\Model\Repository\PostRepository;
 use Blog\Model\Service\BlogModelService;
 use Blog\Model\Service\Factory\BlogModelServiceFactory;
 use Blog\Plugin\LolaPlugin;
