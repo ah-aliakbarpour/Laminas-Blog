@@ -13,6 +13,7 @@ use Blog\Service\CommentService;
 use Blog\Service\Factory\CommentServiceFactory;
 use Blog\Service\Factory\PostServiceFactory;
 use Blog\Service\PostService;
+use Blog\View\Helper\DisplayDateHelper;
 use Blog\View\Helper\LolaHelper;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Literal;
@@ -107,22 +108,6 @@ return [
 
             PostService::class => PostServiceFactory::class,
             CommentService::class => CommentServiceFactory::class,
-        ],
-    ],
-    'controller_plugins' => [
-        'aliases' => [
-            'lolaPlugin' => LolaPlugin::class
-        ],
-        'factories' => [
-            LolaPlugin::class => InvokableFactory::class,
-        ],
-    ],
-    'view_helpers' => [
-        'aliases' => [
-            'LolaHelper' => LolaHelper::class
-        ],
-        'factories' => [
-            LolaHelper::class => InvokableFactory::class,
         ],
     ],
     'doctrine' => [
