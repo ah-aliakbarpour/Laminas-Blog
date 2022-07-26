@@ -29,12 +29,12 @@ $form->prepare();
 
 ?>
 
-<a class="btn btn-outline-primary mb-3" href="<?= $this->url('post'); ?>">Back</a>
+<?= $this->button()->primaryOutline($this->url('post'),  'Back'); ?>
 <span class="float-right">
-    <a class="btn btn-success" href="<?= $this->url('post/edit', ['id'=>$post->getId()]); ?>">Edit</a>
-    <a class="btn btn-danger" href="<?= $this->url('post/delete', ['id'=>$post->getId()]); ?>">Delete</a>
+    <?= $this->button()->success($this->url('post/edit', ['id'=>$post->getId()]), 'Edit'); ?>
+    <?= $this->button()->danger($this->url('post/delete', ['id'=>$post->getId()]), 'Delete'); ?>
 </span>
-
+<br><br>
 <h1>
     <?= $this->escapeHtml($post->getTitle()); ?>
 </h1>
@@ -45,10 +45,10 @@ $form->prepare();
 &nbsp;
 <p style="display: inline">
     <small>
-        Created At: <?= $this->escapeHtml(date('d M Y H:i:s', strtotime($post->getCreatedAt()))); ?>
+        Created At: <?= $this->displayDate($post->getCreatedAt()); ?>
         <?php if ($post->getUpdatedAt()): ?>
         |
-        Updated At: <?= $this->escapeHtml(date('d M Y H:i:s', strtotime($post->getUpdatedAt()))); ?>
+        Updated At: <?= $this->displayDate($post->getUpdatedAt()); ?>
         <?php endif; ?>
     </small>
 </p>

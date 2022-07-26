@@ -19,7 +19,9 @@ $form->prepare();
 
 <h1>
     Add New Post
-    <a class="btn btn-outline-primary mb-3 float-right" href="<?= $this->url('post'); ?>">Back</a>
+    <span class="float-right">
+        <?= $this->button()->primaryOutline($this->url('post'),  'Back'); ?>
+    </span>
 </h1>
 
 <div class="row">

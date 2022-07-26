@@ -13,6 +13,7 @@ use Blog\Service\CommentService;
 use Blog\Service\Factory\CommentServiceFactory;
 use Blog\Service\Factory\PostServiceFactory;
 use Blog\Service\PostService;
+use Blog\View\Helper\ButtonHelper;
 use Blog\View\Helper\DisplayDateHelper;
 use Blog\View\Helper\LolaHelper;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -108,6 +109,16 @@ return [
 
             PostService::class => PostServiceFactory::class,
             CommentService::class => CommentServiceFactory::class,
+        ],
+    ],
+    'view_helpers' => [
+        'aliases' => [
+            'displayDate' => DisplayDateHelper::class,
+            'button' => ButtonHelper::class,
+        ],
+        'factories' => [
+            DisplayDateHelper::class => InvokableFactory::class,
+            ButtonHelper::class => InvokableFactory::class,
         ],
     ],
     'doctrine' => [
