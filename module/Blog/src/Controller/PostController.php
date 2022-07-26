@@ -50,7 +50,8 @@ class PostController extends AbstractActionController
     {
         $postId = $this->params()->fromRoute('id', -1);
 
-        $access = $this->postService->access(false, $postId, true);
+        $access = $this->access()->view($postId);
+
         if (!$access['done']) {
             $this->flashMessenger()->addErrorMessage($access['data']['errorMessage']);
             return $this->redirect()->toRoute($access['data']['redirectToRoute']);
@@ -66,7 +67,8 @@ class PostController extends AbstractActionController
 
     public function addAction()
     {
-        $access = $this->postService->access(true);
+        $access = $this->access()->add();
+
         if (!$access['done']) {
             $this->flashMessenger()->addErrorMessage($access['data']['errorMessage']);
             return $this->redirect()->toRoute($access['data']['redirectToRoute']);
@@ -99,7 +101,8 @@ class PostController extends AbstractActionController
     {
         $postId = $this->params()->fromRoute('id', -1);
 
-        $access = $this->postService->access(true, $postId, true, true);
+        $access = $this->access()->edit($postId);
+
         if (!$access['done']) {
             $this->flashMessenger()->addErrorMessage($access['data']['errorMessage']);
             return $this->redirect()->toRoute($access['data']['redirectToRoute']);
@@ -145,7 +148,8 @@ class PostController extends AbstractActionController
     {
         $postId = $this->params()->fromRoute('id', -1);
 
-        $access = $this->postService->access(true, $postId, true, true);
+        $access = $this->access()->delete($postId);
+
         if (!$access['done']) {
             $this->flashMessenger()->addErrorMessage($access['data']['errorMessage']);
             return $this->redirect()->toRoute($access['data']['redirectToRoute']);

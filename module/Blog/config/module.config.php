@@ -8,6 +8,8 @@ use Blog\Controller\Factory\PostControllerFactory;
 use Blog\Controller\PostController;
 use Blog\Model\Service\BlogModelService;
 use Blog\Model\Service\Factory\BlogModelServiceFactory;
+use Blog\Plugin\AccessPlugin;
+use Blog\Plugin\Factory\AccessPluginFactory;
 use Blog\Plugin\LolaPlugin;
 use Blog\Service\CommentService;
 use Blog\Service\Factory\CommentServiceFactory;
@@ -109,6 +111,14 @@ return [
 
             PostService::class => PostServiceFactory::class,
             CommentService::class => CommentServiceFactory::class,
+        ],
+    ],
+    'controller_plugins' => [
+        'aliases' => [
+            'access' => AccessPlugin::class,
+        ],
+        'factories' => [
+            AccessPlugin::class => AccessPluginFactory::class,
         ],
     ],
     'view_helpers' => [
