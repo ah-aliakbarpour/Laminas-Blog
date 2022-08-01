@@ -6,27 +6,17 @@ use Blog\Model\Entity\CommentEntity;
 use Blog\Model\Entity\PostEntity;
 use Blog\Model\Repository\CommentRepository;
 use Blog\Model\Repository\PostRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Decorator\EntityManagerDecorator;
 
-class BlogModelService implements BlogModelServiceInterface
+class BlogModelService extends EntityManagerDecorator implements BlogModelServiceInterface
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     public function postRepository(): PostRepository
     {
-        return $this->entityManager->getRepository(PostEntity::class);
+        return $this->getRepository(PostEntity::class);
     }
 
     public function commentRepository(): CommentRepository
     {
-        return $this->entityManager->getRepository(CommentEntity::class);
+        return $this->getRepository(CommentEntity::class);
     }
 }
