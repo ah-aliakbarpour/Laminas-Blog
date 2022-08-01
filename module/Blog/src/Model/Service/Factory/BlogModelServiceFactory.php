@@ -4,7 +4,6 @@ namespace Blog\Model\Service\Factory;
 
 use Blog\Model\Service\BlogModelService;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Psr\Container\ContainerInterface;
 

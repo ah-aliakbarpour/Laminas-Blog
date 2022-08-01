@@ -9,6 +9,12 @@ use Blog\Model\Entity\PostEntity;
  * @var $search string
  */
 
+$paginateData['allPages'] = ceil($paginateData['total'] / $paginateData['itemsPerPage']);
+$paginateData['end'] = $paginateData['start'] + $paginateData['itemsPerPage'] - 1;;
+if ($paginateData['end'] > $paginateData['total'])
+    $paginateData['end'] = $paginateData['total'];
+
+
 $this->headTitle('Posts list');
 
 $form = $this->form;

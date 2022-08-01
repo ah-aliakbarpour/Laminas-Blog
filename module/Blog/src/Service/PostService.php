@@ -38,12 +38,7 @@ class PostService implements PostServiceInterface
 
     public function find(string $postId): array
     {
-        $posts = $this->postRepository->get(
-            'post',
-            [
-                ['where', 'post.id = :value', $postId],
-            ]
-        );
+        $posts = $this->postRepository->get('', [], false, $postId);
 
         if (empty($posts))
             return [
@@ -190,49 +185,30 @@ class PostService implements PostServiceInterface
         ];
     }
 
-    public function paginate(string $search, $currentPage, int $itemsPerPage): array
+    public function findAll(string $search, $currentPage, int $itemsPerPage): array
     {
+        $total = intval($this->postRepository->get($search, [], true)['total']);
         $currentPage = intval($currentPage ?? 1);
         if ($currentPage < 1)
             $currentPage = 1;
-
-        $total = intval($this->postRepository->get(
-            'count(post.id) as total',
-            [
-                ['where', 'user.name LIKE :value', '%'.$search.'%'],
-                ['orWhere', 'post.title LIKE :value', '%'.$search.'%'],
-                ['orWhere', 'post.context LIKE :value', '%'.$search.'%'],
-            ],
-            true
-        )['total']);
-        $allPages = ceil($total / $itemsPerPage);
         $start = ($currentPage - 1) * $itemsPerPage + 1;
-        $end = $start + $itemsPerPage - 1;
-        if ($end > $total)
-            $end = $total;
+        $paginationData = [
+            'start' => $start - 1,
+            'maxResults' => $itemsPerPage,
+        ];
 
-        $posts = $this->postRepository->get(
-            'partial post.{id, title, createdAt}, partial user.{id, name}',
-            [
-                ['where', 'user.name LIKE :value', '%'.$search.'%'],
-                ['orWhere', 'post.title LIKE :value', '%'.$search.'%'],
-                ['orWhere', 'post.context LIKE :value', '%'.$search.'%'],
-                ['orderBy', 'post.id'],
-                ['setFirstResult', $start - 1],
-                ['setMaxResults', $itemsPerPage],
-            ]
-        );
+        $posts = $this->postRepository->get($search, $paginationData);
+
+        $data = [
+            'currentPage' => $currentPage,
+            'start' => $start,
+            'itemsPerPage' => $itemsPerPage,
+            'total' => $total,
+        ];
 
         return [
             'done' => true,
-            'data' => [
-                'currentPage' => $currentPage,
-                'start' => $start,
-                'end' => $end,
-                'itemsPerPage' => $itemsPerPage,
-                'total' => $total,
-                'allPages' => $allPages,
-            ],
+            'data' => $data,
             'items' => $this->_prepare($posts),
         ];
     }

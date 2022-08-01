@@ -32,7 +32,7 @@ class PostController extends AbstractActionController
 
         $ITEMS_PER_PAGE = 5;
 
-        $paginate = $this->postService->paginate(
+        $paginate = $this->postService->findAll(
             $data['search'] ?? '',
             $data['page'],
             $ITEMS_PER_PAGE

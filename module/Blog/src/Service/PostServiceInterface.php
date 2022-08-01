@@ -27,5 +27,5 @@ interface PostServiceInterface
     public function access(bool $identity, $postId = -1, bool $exists = false, bool $access = false): array;
 
     // Paginate data
-    public function paginate(string $search, $currentPage, int $itemsPerPage): array;
+    public function findAll(string $search, $currentPage, int $itemsPerPage): array;
 }

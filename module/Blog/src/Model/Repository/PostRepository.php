@@ -2,7 +2,6 @@
 
 namespace Blog\Model\Repository;
 
-use Blog\Model\Entity\PostEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -22,49 +21,54 @@ class PostRepository extends EntityRepository
         $this->entityManager = $this->getEntityManager();
     }
 
-    // Create query builder for get posts from database
-    public function get(string $select, array $queries = [], bool $singleResult = false)
+    /**
+     * Create query builder for get posts from database
+     */
+    public function get(string $search, array $paginationData = [], bool $total = false, int $id = 0): array
     {
+        // Select
+        if ($total)
+            $select = 'count(post.id) as total';
+        elseif ($id)
+            $select = 'partial post.{id, title, context, createdAt, updatedAt}';
+        else
+            $select = 'partial post.{id, title, context, createdAt}, partial user.{id, name}';
+
+        // Create body
         $queryBuilder = $this->createQueryBuilder('post')
             ->select($select)
             ->join('post.user', 'user');
 
-        foreach ($queries as $query)
-            switch ($query[0]) {
-                case 'where':
-                    $queryBuilder->where($query[1])
-                        ->setParameter('value', $query[2]);
-                    break;
+        // Search
+        if ($search != '') {
+            $queryBuilder
+                ->where('user.name LIKE :searchName')
+                ->setParameter('searchName', '%'.$search.'%')
+                ->orWhere('post.title LIKE :searchTitle')
+                ->setParameter('searchTitle', '%'.$search.'%')
+                ->orWhere('post.context LIKE :searchContext')
+                ->setParameter('searchContext', '%'.$search.'%');
+        }
 
-                case 'andWhere':
-                    $queryBuilder->andWhere($query[1])
-                        ->setParameter('value', $query[2]);
-                    break;
+        // Pagination
+        if (empty(!$paginationData)) {
+            $queryBuilder
+                ->setFirstResult($paginationData['start'])
+                ->setMaxResults($paginationData['maxResults']);
+        }
 
-                case 'orWhere':
-                    $queryBuilder->orWhere($query[1])
-                        ->setParameter('value', $query[2]);
-                    break;
+        // Find by id
+        if ($id) {
+            $queryBuilder
+                ->where('post.id = :id')
+                ->setParameter('id', $id);
+        }
 
-                case 'orderBy':
-                    $queryBuilder->orderBy($query[1]);
-                    break;
+        $queryBuilder = $queryBuilder
+            ->orderBy('post.id')
+            ->getQuery();
 
-                case 'setFirstResult':
-                    $queryBuilder->setFirstResult($query[1]);
-                    break;
-
-                case 'setMaxResults':
-                    $queryBuilder->setMaxResults($query[1]);
-                    break;
-
-                default:
-                    break;
-            }
-
-        $queryBuilder = $queryBuilder->getQuery();
-
-        if ($singleResult)
+        if ($total)
             $result = $queryBuilder->getSingleResult();
         else
             $result = $queryBuilder->getResult();
