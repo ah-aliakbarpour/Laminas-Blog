@@ -10,12 +10,18 @@ use Doctrine\ORM\Decorator\EntityManagerDecorator;
 
 class BlogModelService extends EntityManagerDecorator implements BlogModelServiceInterface
 {
-    public function postRepository(): PostRepository
+    /**
+     * @return PostRepository
+     */
+    public function getPostRepository(): PostRepository
     {
         return $this->getRepository(PostEntity::class);
     }
 
-    public function commentRepository(): CommentRepository
+    /**
+     * @return CommentRepository
+     */
+    public function getCommentRepository(): CommentRepository
     {
         return $this->getRepository(CommentEntity::class);
     }

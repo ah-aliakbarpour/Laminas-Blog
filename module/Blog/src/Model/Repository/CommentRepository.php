@@ -15,6 +15,10 @@ class CommentRepository extends EntityRepository
      */
     public $entityManager;
 
+    /**
+     * @param EntityManagerInterface $em
+     * @param ClassMetadata $class
+     */
     public function __construct(EntityManagerInterface $em, ClassMetadata $class)
     {
         parent::__construct($em, $class);

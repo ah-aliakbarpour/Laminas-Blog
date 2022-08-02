@@ -7,9 +7,16 @@ use Blog\Model\Repository\PostRepository;
 
 interface BlogModelServiceInterface
 {
-    // Get post repository
-    public function postRepository(): PostRepository;
+    /**
+     * Get post repository
+     * @return PostRepository
+     */
+    public function getPostRepository(): PostRepository;
 
-    // Get comment repository
-    public function commentRepository(): CommentRepository;
+    /**
+     * Get comment repository
+     * @return CommentRepository
+     */
+    public function getCommentRepository(): CommentRepository;
+
 }

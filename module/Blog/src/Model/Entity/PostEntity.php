@@ -3,6 +3,7 @@
 namespace Blog\Model\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\PersistentCollection;
 use User\Model\Entity\UserEntity;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -46,51 +47,86 @@ class PostEntity
     protected $updatedAt;
 
 
-    public function getId()
+    /**
+     * @return string
+     */
+    public function getId(): string
     {
         return $this->id;
     }
 
+    /**
+     * @param $id
+     * @return void
+     */
     public function setId($id): void
     {
         $this->id = $id;
     }
 
-    public function getTitle()
+    /**
+     * @return string
+     */
+    public function getTitle(): string
     {
         return $this->title;
     }
 
+    /**
+     * @param $title
+     * @return void
+     */
     public function setTitle($title): void
     {
         $this->title = $title;
     }
 
-    public function getContext()
+    /**
+     * @return string
+     */
+    public function getContext(): string
     {
         return $this->context;
     }
 
+    /**
+     * @param $context
+     * @return void
+     */
     public function setContext($context): void
     {
         $this->context = $context;
     }
 
-    public function getCreatedAt()
+    /**
+     * @return string
+     */
+    public function getCreatedAt(): string
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param $createdAt
+     * @return void
+     */
     public function setCreatedAt($createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * @return mixed
+     */
     public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
+    /**
+     * @param $updatedAt
+     * @return void
+     */
     public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -103,7 +139,7 @@ class PostEntity
     protected $comments;
 
     /**
-     * Returns comments for this post.
+     * @return ArrayCollection
      */
     public function getComments()
     {
@@ -111,7 +147,9 @@ class PostEntity
     }
 
     /**
-     * Adds a new comment to this post.
+     * Adds a new comment to this post
+     * @param CommentEntity $comment
+     * @return void
      */
     public function addComment(CommentEntity $comment): void
     {
@@ -125,7 +163,8 @@ class PostEntity
     protected $user;
 
     /**
-     * Returns associated user.
+     * Returns associated user
+     * @return UserEntity
      */
     public function getUser(): UserEntity
     {
@@ -133,7 +172,9 @@ class PostEntity
     }
 
     /**
-     * Sets associated user.
+     * Sets associated user
+     * @param UserEntity $user
+     * @return void
      */
     public function setUser(UserEntity $user): void
     {

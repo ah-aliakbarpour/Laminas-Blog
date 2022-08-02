@@ -12,20 +12,49 @@ use User\Service\AuthService;
  */
 interface PostServiceInterface
 {
+    /**
+     * @param BlogModelService $blogModelService
+     * @param AuthService $authService
+     */
     public function __construct(BlogModelService $blogModelService, AuthService $authService);
 
-    // Find a single post by id
+    /**
+     * Find a single post by id
+     * @param string $postId
+     * @return array
+     */
     public function find(string $postId): array;
 
-    // Add/Edit new post
+    /**
+     *  Find all postt
+     * @param string $search
+     * @param $currentPage
+     * @param int $itemsPerPage
+     * @return array
+     */
+    public function findAll(string $search, $currentPage, int $itemsPerPage): array;
+
+    /**
+     * Add/Edit new post
+     * @param array $data
+     * @return array
+     */
     public function save(array $data): array;
 
-    // Delete post
+    /**
+     * Delete post
+     * @param string $postId
+     * @return array
+     */
     public function delete(string $postId): array;
 
-    // Check user access
-    public function access(bool $identity, $postId = -1, bool $exists = false, bool $access = false): array;
-
-    // Paginate data
-    public function findAll(string $search, $currentPage, int $itemsPerPage): array;
+    /**
+     * Check user access
+     * @param bool $identity
+     * @param int $postId
+     * @param bool $exists
+     * @param bool $access
+     * @return array
+     */
+    public function access(bool $identity, int $postId = -1, bool $exists = false, bool $access = false): array;
 }

@@ -14,6 +14,10 @@ class PostRepository extends EntityRepository
      */
     public $entityManager;
 
+    /**
+     * @param EntityManagerInterface $em
+     * @param ClassMetadata $class
+     */
     public function __construct(EntityManagerInterface $em, ClassMetadata $class)
     {
         parent::__construct($em, $class);
@@ -22,7 +26,12 @@ class PostRepository extends EntityRepository
     }
 
     /**
-     * Create query builder for get posts from database
+     * Get related posts
+     * @param string $search
+     * @param array $paginationData
+     * @param bool $total
+     * @param int $id
+     * @return array
      */
     public function get(string $search, array $paginationData = [], bool $total = false, int $id = 0): array
     {

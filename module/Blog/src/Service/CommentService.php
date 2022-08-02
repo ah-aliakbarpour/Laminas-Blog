@@ -29,13 +29,21 @@ class CommentService implements CommentServiceInterface
      */
     public $entityManager;
 
+    /**
+     * @param BlogModelService $blogModelService
+     * @param PostService $postService
+     */
     public function __construct(BlogModelService $blogModelService, PostService $postService)
     {
-        $this->commentRepository = $blogModelService->commentRepository();
+        $this->commentRepository = $blogModelService->getCommentRepository();
         $this->entityManager = $this->commentRepository->entityManager;
         $this->postService = $postService;
     }
 
+    /**
+     * @param array $data
+     * @return array
+     */
     public function save(array $data): array
     {
         $find = $this->postService->find($data['postId']);

@@ -39,7 +39,7 @@ class CommentEntity
     protected $updatedAt;
 
 
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -49,7 +49,7 @@ class CommentEntity
         $this->id = $id;
     }
 
-    public function getContext()
+    public function getContext(): string
     {
         return $this->context;
     }
@@ -59,7 +59,7 @@ class CommentEntity
         $this->context = $context;
     }
 
-    public function getAuthor()
+    public function getAuthor(): string
     {
         return $this->author;
     }
@@ -69,7 +69,7 @@ class CommentEntity
         $this->author = $author;
     }
 
-    public function getCreatedAt()
+    public function getCreatedAt(): string
     {
         return $this->createdAt;
     }

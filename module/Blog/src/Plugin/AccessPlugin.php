@@ -2,11 +2,8 @@
 
 namespace Blog\Plugin;
 
-use Blog\Controller\PostController;
 use Blog\Service\PostService;
 use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
-use Laminas\Mvc\Controller\Plugin\Params;
-use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
 
 class AccessPlugin extends AbstractPlugin
 {
@@ -15,27 +12,45 @@ class AccessPlugin extends AbstractPlugin
      */
     private $postService;
 
+    /**
+     * @param PostService $postService
+     */
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
     }
 
-    public function view($postId)
+    /**
+     * @param $postId
+     * @return array
+     */
+    public function view($postId): array
     {
         return $this->postService->access(false, $postId, true);
     }
 
-    public function add()
+    /**
+     * @return array
+     */
+    public function add(): array
     {
         return $this->postService->access(true);
     }
 
-    public function edit($postId)
+    /**
+     * @param $postId
+     * @return array
+     */
+    public function edit($postId): array
     {
         return $this->postService->access(true, $postId, true, true);
     }
 
-    public function delete($postId)
+    /**
+     * @param $postId
+     * @return array
+     */
+    public function delete($postId): array
     {
         return $this->postService->access(true, $postId, true, true);
     }

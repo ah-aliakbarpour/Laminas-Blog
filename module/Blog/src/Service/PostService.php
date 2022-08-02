@@ -29,13 +29,21 @@ class PostService implements PostServiceInterface
      */
     private $authService;
 
+    /**
+     * @param BlogModelService $blogModelService
+     * @param AuthService $authService
+     */
     public function __construct(BlogModelService $blogModelService, AuthService $authService)
     {
-        $this->postRepository = $blogModelService->postRepository();
+        $this->postRepository = $blogModelService->getPostRepository();
         $this->entityManager = $this->postRepository->entityManager;
         $this->authService = $authService;
     }
 
+    /**
+     * @param string $postId
+     * @return array
+     */
     public function find(string $postId): array
     {
         $posts = $this->postRepository->get('', [], false, $postId);
@@ -60,6 +68,10 @@ class PostService implements PostServiceInterface
         ];
     }
 
+    /**
+     * @param array $data
+     * @return array
+     */
     public function save(array $data): array
     {
         // Validation
@@ -107,6 +119,10 @@ class PostService implements PostServiceInterface
         ];
     }
 
+    /**
+     * @param string $postId
+     * @return array
+     */
     public function delete(string $postId): array
     {
         $find = $this->find($postId);
@@ -134,6 +150,13 @@ class PostService implements PostServiceInterface
         ];
     }
 
+    /**
+     * @param bool $identity
+     * @param $postId
+     * @param bool $exists
+     * @param bool $access
+     * @return array
+     */
     public function access(bool $identity, $postId = -1, bool $exists = false, bool $access = false): array
     {
         if ($identity && !$this->authService->hasIdentity())
@@ -185,6 +208,12 @@ class PostService implements PostServiceInterface
         ];
     }
 
+    /**
+     * @param string $search
+     * @param $currentPage
+     * @param int $itemsPerPage
+     * @return array
+     */
     public function findAll(string $search, $currentPage, int $itemsPerPage): array
     {
         $total = intval($this->postRepository->get($search, [], true)['total']);
@@ -213,6 +242,10 @@ class PostService implements PostServiceInterface
         ];
     }
 
+    /**
+     * @param array $posts
+     * @return array
+     */
     private function _prepare(array $posts): array
     {
         /**
@@ -227,6 +260,10 @@ class PostService implements PostServiceInterface
         return $posts;
     }
 
+    /**
+     * @param array $data
+     * @return array
+     */
     private function _validate(array $data): array
     {
         // Filter data
